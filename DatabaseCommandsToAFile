@@ -1,0 +1,93 @@
+Writing Database Commands to a File
+
+Learning Goals
+Write SQL code in your text editor instead of your command line
+Learn how to execute SQL code you've written in your text editor against a database you've created
+
+Until now we've been using our SQL commands directly in the terminal 
+however you will find yourself writing SQL in a file and executing that file in the 
+context of your db 
+
+The more complex our db become, the more tables we add and the more advanced the queries 
+we run against them, the harder it becomes to keep track of all 
+the sqlite3 prompt in our terminal 
+
+We can write SQL in our text editor and execute it 
+allowing us to keep track of our SQL code 
+including SQL statements that create tables and query data from those tables 
+
+To write SQL in our text editor and execute that SQL against a specific db 
+we'll create files in our text editor that have the 
+.sql extention 
+Then we can run these files against our db in the command line 
+--------------------------------------------------------------------------------------
+Code Along
+Creating a Database and Table
+
+1 . In the terminal, create a database with the following command:
+
+    sqlite3 pets_database.db
+
+Once created, exit the sqlite prompt with the .quit command 
+
+Open up a text editor and create and save a file 
+01_create_cats_table.sql
+
+Make sure the new file is saved in the same directory 
+were you created the db 
+
+In the file write 
+CREATE TABLE cats (
+  id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER
+); 
+
+You won't be able to view the pet_database.db 
+directly in your text editor. This file is the binary representation of the database 
+It wont open up in a text editor, but it does open up in the image view app
+It is the same way for .db files 
+They wont object in your editor, but they can be read by the appropriate db engine 
+
+2. Execute that file in the command line 
+   Before running the command below make sure you've exited the SQLite prompt 
+   that you were in earlier 
+
+   sqlite3 pets_database.db < 01_create_cats_table.sql
+
+   Confirming our SQL Execution 
+   To confirm that the above execution of SQL commmands in our .sql file worked 
+
+   1. In the terminal enter into your Pets db with 
+
+       sqlite3 pets_database.db
+
+    2. Then run .schema command 
+       and you should see 
+
+       CREATE TABLE cats (
+          id INTEGER PRIMARY KEY,
+            name TEXT,
+            age INTEGER
+        ); 
+
+Operating on Our Database from the text editor 
+To carry out any subsequent action on this database
+adding a column to the cats table, dropping the table, creating a new table 
+we can create a new .sql file in the text editor and execute them in the same way above 
+
+1. To add a column to our cats table 
+   Create a file name 
+   02_add_column_to_cats.sql
+
+   and fill it out with 
+   ALTER TABLE cats ADD COLUMN breed TEXT; 
+
+   Then execute the file in you command line 
+   sqlite3 pets_database.db < 02_add_column_to_cats.sql 
+
+2. Confirm that your execution of the .sql file worked by entering your db in the terminal 
+   sqlite3 pets_database.db
+   .schema
+   and you should see the table include breed column
+

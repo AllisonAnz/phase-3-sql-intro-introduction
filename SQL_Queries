@@ -1,0 +1,318 @@
+SQL Queries
+
+Learning Goals
+Define a query as an SQL statement that retrieves data from a database
+Use the ORDER BY modifier to order tables by specific SELECT statements
+Use the ASC and DESC modifiers to sort queries in ascending or descending order
+Use the LIMIT modifier to determine the number of records to retrieve from a dataset
+Use the BETWEEN modifier to retrieve records that contain a value that is within a given range
+Use the NULL data type keyword to insert new records into a table
+Use the COUNT function to count the number of records that meet a certain condition
+Use the GROUP BY function to group your results according to the values in a given column
+
+In this lesson we'll cover how to write SQL queries to retrieve and 
+add specifc data to SQL databse tables 
+
+What is a SQL Query
+The term "query" refers to any SQL statement that retrieves data from your database
+We've already written a number of SQL queries using basic SELECT statements 
+We've already seen how to retrieve single units of data or rows with queries 
+
+To select all the rows from a cats table 
+    SELECT * FROM cats; 
+
+To select only rows representing data meeting a certain condtion 
+    SELECT * FROM cats WHERE name = "Maru"; 
+
+Data Storage isn't very useful if we can't manupulate, view and analyze that data 
+SQL is a powerful too for doing so 
+
+-------------------------------------------------------------------------------------------
+Code Along SQL Queries 
+
+Creating our Database 
+Create a pets_database 
+sqlit
+
+Create our cats table 
+CREATE TABLE cats (
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  age INTEGER,
+  breed TEXT,
+  owner_id INTEGER
+); 
+
+Add some cats 
+INSERT INTO cats (name, age, breed, owner_id) VALUES ("Maru", 3 , "Scottish Fold", 1);
+INSERT INTO cats (name, age, breed, owner_id) VALUES ("Hana", 1 , "Tabby", 1);
+INSERT INTO cats (name, age, breed) VALUES ("Lil\' Bub", 5, "American Shorthair");
+INSERT INTO cats (name, age, breed) VALUES ("Moe", 10, "Tabby");
+INSERT INTO cats (name, age, breed) VALUES ("Patches", 2, "Calico"); 
+
+Check our our cats 
+SELECT * FROM cats; 
+
+Should return 
+1|Maru|3|Scottish Fold|1
+2|Hana|1|Tabby|1
+3|Lil\' Bub|5|American Shorthair|
+4|Moe|10|Tabby|
+5|Patches|2|Calico| 
+
+* Tip: You can format the output of your selected statements with a few options 
+.headers on      # output the name of each column 
+.mode column     # now we are in column mode, enabling us to run the next two .width commands 
+.width auto      # adjusts and normalizes column width # or 
+.width NUM1, NUM2 # customize column width 
+
+Run the first two commands and then execute the above SELECT statement 
+again and you should see something like this:
+
+id          name        age         breed          owner_id  
+----------  ----------  ----------  -------------  ----------
+1           Maru        3           Scottish Fold  1
+2           Hana        1           Tabby          1
+3           Lil\' Bub   5           American Shor
+4           Moe         10          Tabby
+5           Patches     2           Calico 
+
+#-----------------------------------------------------------------------------
+
+ORDER BY 
+This modifier allows us to order the table rows returned by a certain SELECT statement 
+
+Here's the boilerplate SELECT statement that uses ORDER BY 
+    SELECT column_name FROM table_name ORDER BY column_name ASC|DESC; 
+
+Select our cats and order them by age 
+    SELECT * FROM cats ORDER BY age; 
+
+Should return 
+d          name        age         breed       owner_id  
+----------  ----------  ----------  ----------  ----------
+2           Hana        1           Tabby       1
+5           Patches     2           Calico
+1           Maru        3           Scottish F  1
+3           Lil\' Bub   5           American S
+4           Moe         10          Tabby 
+
+When using ORDER BY the default is to order it ascending order 
+If we want to specify though we can use 
+ASC for ascending 
+or 
+DESC for descending 
+
+Try to select all of our cats and sort them by age in descending order 
+    SELECT * FROM cats ORDER BY age DESC; 
+
+Should return 
+id          name        age         breed       owner_id  
+----------  ----------  ----------  ----------  ----------
+4           Moe         10          Tabby
+3           Lil\' Bub   5           American S
+1           Maru        3           Scottish F  1
+5           Patches     2           Calico
+2           Hana        1           Tabby       1 
+
+_____________________________________________________________________________________
+
+Limit 
+If we want the oldest cat? If we want to select extremes from a database table 
+for example the employee with the highest paycheck 
+or a patient with the most recent appointment 
+
+We can use ORDER BY in conjunction with limit 
+
+LIMIT is used to determine the number of records you want to return from a dataset 
+SELECT * FROM cats ORDER BY age DESC LIMIT 1; 
+
+This part of the statement SELCT * FROM cats ORDER BY age DESC 
+returns all of the cats in order from oldest to youngest 
+Setting the LIMIT of 1 returns just the first i.e oldest cat on the list 
+
+The return should look like 
+id          name        age         breed       owner_id  
+----------  ----------  ----------  ----------  ----------
+4           Moe         10          Tabby 
+
+Lets get the two olddest Cats 
+SELECT * FROM cats ORDER BY age DESC LIMIT 2;
+
+id          name        age         breed       owner_id  
+----------  ----------  ----------  ----------  ----------
+4           Moe         10          Tabby
+3           Lil\' Bub   5           American S 
+
+-----------------------------------------------------------------------------------
+BETWEEN 
+
+Say we need to select all of the cats whose age is between 1 and 3 
+
+Here is the boilerplate SELECT statement using BETWEEN 
+
+SELECT column_name(s) FROM table_name WHERE column_name BETWEEN value1 AND value2; 
+
+In our cats table 
+
+SELECT name FROM cats WHERE age BETWEEN 1 AND 3; 
+
+This should return 
+
+Maru
+Hana
+Patches 
+
+-------------------------------------------------------------------------------------
+NULL 
+
+Say the administrator of our Pets Database has found a new cat 
+Kitty doesn't have a name yet, but should be added to our db right away 
+
+we can add data with missing values using the NULL keyword 
+
+Insert our new cat that has a breed, but no name 
+INSERT INTO cats (name, age, breed) VALUES (NULL, NULL, "Tabby"); 
+
+Now, if we look at our cats data with SELECT * FROM cats;, we should see:
+id          name        age         breed          owner_id  
+----------  ----------  ----------  -------------  ----------
+1           Maru        3           Scottish Fold  1
+2           Hana        1           Tabby          1
+3           Lil\' Bub   5           American Shor
+4           Moe         10          Tabby
+5           Patches     2           Calico
+6                                   Tabby 
+
+WE can even select the mysterious nameless kitty with the following 
+SELECT * FROM cats WHERE name IS NULL; 
+This should return the following:
+
+id          name        age         breed       owner_id  
+----------  ----------  ----------  ----------  ----------
+6                                   Tabby 
+
+--------------------------------------------------------------------------------------
+
+COUNT 
+
+SQL aggregate function, COUNT 
+SQL aggregate functions are SQL statements that operate on groups of records in our database
+rather than individual records 
+
+For example we can retrieve min and max values from a column 
+sum values in columns, get the average of columns values or count a numnber of records that 
+meet certain conditions 
+
+Focusing on COUNT 
+It will count the number of records that meet a certain condition 
+
+Here is the boilerplate SQL query using count 
+
+    SELECT COUNT([column name]) FROM [table name] WHERE [column name] = [value]
+
+Try it out 
+
+    SELECT COUNT(owner_id) FROM cats WHERE owner_id = 1; 
+
+This should return 
+
+COUNT(owner_id)
+---------------
+2 
+
+---------------------------------------------------------------------------------------
+
+GROUP BY 
+
+It groups your results by a given column 
+
+Our cat table 
+
+id          name        age         breed          owner_id  
+----------  ----------  ----------  -------------  ----------
+1           Maru        3           Scottish Fold  1
+2           Hana        1           Tabby          1
+3           Lil\' Bub   5           American Shor
+4           Moe         10          Tabby
+5           Patches     2           Calico
+6                                   Tabby 
+
+We see there are three tabby cats and one of every other breed 
+If we had a larger database where we couldn't easily see the number of cats grouped by breed 
+
+GROUP BY comes in handy 
+
+SELECT breed, COUNT(breed) FROM cats GROUP BY breed; 
+
+This should return 
+breed               COUNT(breed)
+------------------  ------------
+American Shorthair  1
+Calico              1
+Scottish Fold       1
+Tabby               3 
+
+GROUP BY is a great function for aggregating results into different segments 
+You can even use it on multiple columns 
+
+SELECT breed, owner_id, COUNT(breed) FROM cats GROUP BY breed, owner_id; 
+
+Below you can see that the cats are still grouped by breed but are also now further 
+broken down by ownerid so that the two tabby 
+cats without an ownerid are listed separetely from the tabby who belong to one owner 
+
+breed               owner_id    COUNT(breed)
+------------------  ----------  ------------
+American Shorthair              1
+Calico                          1
+Scottish Fold       1           1
+Tabby                           2
+Tabby               1           1 
+
+---------------------------------------------------------------
+Note one SELECT 
+
+We are now familar with the syntax 
+
+SELECT name FROM cats; 
+
+But you may not know that it can be written like this as well 
+
+SELECT cats.name FROM cats; 
+
+They both return 
+
+name
+----------
+Maru
+Hana
+Lil\' Bub
+Moe
+Patches 
+
+
+SQL like allows us to explicitly state the tableName.columnName we want to select 
+This is particularly usefule when we want data from two different tables 
+
+Imagine we had another table called dogs with a column for the dogs name 
+
+
+CREATE TABLE dogs (
+  id INTEGER PRIMARY KEY,
+  name TEXT
+); 
+INSERT INTO dogs (name) VALUES ("Clifford"); 
+
+If we want to get the names of all the dogs and cats 
+we can no longer run a query with just the column name 
+SELECT name FROM cats, dogs will return ERROR ambiguous column name: name 
+
+instead we must explicitly follow the tableName.columnName syntax 
+
+SELECT cats.name, dogs.name FROM cats, dogs; 
+
+
+
+
+

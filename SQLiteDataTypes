@@ -1,0 +1,55 @@
+SQLite Data Types
+
+Describe data typing and how it allows for operations to be performed with predictable results.
+List four different types of data you can store in a SQLite database.
+Define three specific SQLite database types: Text, Integer, and Real.
+
+
+Why Do Data Types Matter 
+We've learned when we create a table, we need to include a name for it 
+as well as defined at least one column 
+
+We define columns in a CREATE statement by including a name and a 
+datatype to let SQlite know the kind of data we will be storing there 
+The practice of explicitly declaring a type is known as typing 
+
+typing allows us to exercise some level of control over our data 
+Typing informs our database of what kind of data we plan to store in 
+a column but it also restricts it 
+
+Typing gives us the ability to perform all kinds of operations with predictable results 
+Like the abiilty to perform Math operations like SUM 
+
+DataTypes 
+
+Differnt database systems also have different dataypes available 
+Which are important and useful to know whenever you dealing with those systems 
+SQLite has four basic categories of datatypes 
+TEXT 
+INTEGER
+REAL 
+BLOB 
+
+TEXT 
+Any alphanumeric character which we want to represent as plain text 
+
+INTEGER 
+Anything we want to represent as a whole number 
+
+REAL 
+Anything that's a plain old decimal like 1.3 
+
+BLOB 
+For now we will not use BLOB 
+It is generally used for holding binary data 
+
+Note On SQLite 
+To increase it compatibility with other db engines (mySQL or PostgreSQL)
+SQLite allows programmers to use other common datatypes outside of the four above 
+
+That is why we refer to the above as categories 
+All other common datatypes are lumped into one of the four existing dataypes 
+
+For example INT is a common datatype outside of SQLite. 
+SQLite wont complain if you define a column as INT datatype 
+it will simply lump it into the INTEGER category and store it as such 
